@@ -74,6 +74,9 @@ Quip.grid.Comments = function(config) {
             ,handler: this.toggleDeleted
             ,enableToggle: true
             ,scope: this
+        },{
+            text: _('quip.comment_update')
+            ,handler: this.updateComment1
         },'->',{
             xtype: 'textfield'
             ,name: 'search'
@@ -263,6 +266,21 @@ Ext.extend(Quip.grid.Comments,MODx.grid.Grid,{
             });
         }
         this.updateCommentWindow.setValues(this.menu.record);
+        this.updateCommentWindow.show(e.target);
+    }
+	,updateComment1: function(btn,e) {
+		var cs = this.getSelectedAsList();
+        if (cs === false) return false;
+        if (!this.updateCommentWindow) {
+            this.updateCommentWindow = MODx.load({
+                xtype: 'quip-window-comment-update'
+                ,record: cs
+                ,listeners: {
+                    'success': {fn:this.refresh,scope:this}
+                }
+            });
+        }
+        this.updateCommentWindow.setValues(cs);
         this.updateCommentWindow.show(e.target);
     }
     ,rejectComment: function(btn,e) {
