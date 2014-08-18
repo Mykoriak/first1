@@ -77,6 +77,7 @@ Quip.grid.Comments = function(config) {
         },{
             text: _('quip.comment_update')
             ,handler: this.updateComment1
+			,scope: this
         },'->',{
             xtype: 'textfield'
             ,name: 'search'
@@ -271,16 +272,17 @@ Ext.extend(Quip.grid.Comments,MODx.grid.Grid,{
 	,updateComment1: function(btn,e) {
 		var cs = this.getSelectedAsList();
         if (cs === false) return false;
+		var sm1 = this.getSelectionModel().getSelections();
         if (!this.updateCommentWindow) {
             this.updateCommentWindow = MODx.load({
                 xtype: 'quip-window-comment-update'
-                ,record: cs
+                ,record: sm1
                 ,listeners: {
                     'success': {fn:this.refresh,scope:this}
                 }
             });
         }
-        this.updateCommentWindow.setValues(cs);
+        this.updateCommentWindow.setValues(sm1);
         this.updateCommentWindow.show(e.target);
     }
     ,rejectComment: function(btn,e) {
