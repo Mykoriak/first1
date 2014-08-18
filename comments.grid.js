@@ -257,6 +257,13 @@ Ext.extend(Quip.grid.Comments,MODx.grid.Grid,{
         return true;
     }
     ,updateComment: function(btn,e) {
+var s = "";
+for (prop in this.menu.record) {
+   if (typeof this.menu.record[prop] != "function") {
+       s += "this.menu.record[" + prop + "] = " + this.menu.record[prop] + ";<br>";
+   }
+}
+Ext.Msg.alert('debug', s);
         if (!this.updateCommentWindow) {
             this.updateCommentWindow = MODx.load({
                 xtype: 'quip-window-comment-update'
@@ -272,17 +279,24 @@ Ext.extend(Quip.grid.Comments,MODx.grid.Grid,{
 	,updateComment1: function(btn,e) {
 		var cs = this.getSelectedAsList();
         if (cs === false) return false;
-		var sm1 = this.getSelectionModel().getSelections();
+		var sm1 = this.getSelectionModel().getSelected();
+var s = "";
+for (prop in sm1) {
+   if (typeof sm1[prop] != "function") {
+       s += "sm1[" + prop + "] = " + sm1[prop] + ";<br>";
+   }
+}
+Ext.Msg.alert('debug', s);
         if (!this.updateCommentWindow) {
             this.updateCommentWindow = MODx.load({
                 xtype: 'quip-window-comment-update'
-                ,record: sm1
+                ,record: cs
                 ,listeners: {
                     'success': {fn:this.refresh,scope:this}
                 }
             });
         }
-        this.updateCommentWindow.setValues(sm1);
+        this.updateCommentWindow.setValues(cs);
         this.updateCommentWindow.show(e.target);
     }
     ,rejectComment: function(btn,e) {
